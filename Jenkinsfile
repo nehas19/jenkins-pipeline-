@@ -4,18 +4,23 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                echo 'Building..'
+                 sh 'mvn compile'
             }
         }
         stage('Test') {
             steps {
-                echo 'Testing..'
+                 sh 'mvn -Dmaven.test.failure.ignore=true install'
             }
+			  }
+            post {
+                success {
+                    junit 'target/surefire-reports/**/*.xml' 
+                }
         }
-        stage('Deploy') {
+    /*    stage('Deploy') {
             steps {
                 echo 'Deploying....'
             }
-        }
+        } */
     }
 }
